@@ -4,11 +4,12 @@
  *  Date: 2/1/2013
  *  Requires: jQuery 1.7+
  *  Description: A light weight plugin that transforms a multi select drop menu into two panels for easy selections.
- *  Author: Benny Lin
- *  Designer: Monique 
+ *  Demo: http://bennylin.net/jquery-plugin-light-weight-multiselect/
+ *  Author: Benny Lin - http://bennylin.net
+ *  Designer: Monique Aviles
  *  License: MIT License
  *  jQuery Boilerplate: http://jqueryboilerplate.com/
-  */
+ */
 
 ;(function ($, window, document, undefined) {    
   var pluginName = "lwMultiSelect";

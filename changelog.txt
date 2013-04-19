@@ -1,3 +1,11 @@
+1.0.1 - 4/19/2013
+--------------------------
+
+ * added missing plugin name to the click events
+ * minor updates on comments
+
+
+
 1.0 - 2/10/2013
 --------------------------
 

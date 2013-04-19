@@ -1,6 +1,6 @@
 /*
  *  Project: jQuery Light Weight MultiSelect
- *  Version: 1.0
+ *  Version: 1.0.1
  *  Date: 2/1/2013
  *  Requires: jQuery 1.7+
  *  Description: A light weight plugin that transforms a multi select drop menu into two panels for easy selections.
@@ -67,7 +67,7 @@
     /* event: clicking on right container li */
     removeItem: function(that) {
       var $self = $(that); 
-      this.$availList.find('li[data-value=' + $self.data('value') + ']').removeClass('lwms-selected'); //remove ms-selected from available list
+      this.$availList.find('li[data-value=' + $self.data('value') + ']').removeClass('lwms-selected'); //remove lwms-selected from available list
       this.$element.find('option[value=' + $self.data('value') + ']').removeAttr('selected'); //remove selected on the source
       $self.remove(); //remove the current element from selected 
       this.updateCount(); //refresh counts
@@ -97,7 +97,7 @@
     
     /* event: remove all */
     removeAll: function() {
-      this.$availList.find('li').removeClass('lwms-selected'); //remove all ms-selected from available
+      this.$availList.find('li').removeClass('lwms-selected'); //remove all lwms-selected from available
       this.$selectedList.empty(); //clear selected list
       this.$element.children().removeAttr('selected'); //remove all selected from source, used attr vs prop because clone doesn't carry over selected attr
 
@@ -132,8 +132,8 @@
       });
 
       //remove all
-      this.$mainContainer.off('click','.lwms-removeall');
-      this.$mainContainer.on('click','.lwms-removeall',function(e) {
+      this.$mainContainer.off('click.lwmultiselect','.lwms-removeall');
+      this.$mainContainer.on('click.lwmultiselect','.lwms-removeall',function(e) {
         e.preventDefault();
         that.removeAll();        
       });

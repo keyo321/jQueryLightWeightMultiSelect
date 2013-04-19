@@ -4,7 +4,6 @@
   "description": "A light weight jQuery plugin that converts a multiselect drop menu into a simple two panel selection interface.",
   "keywords": [
     "jquery",
-    "light weight",
     "multiselect",    
     "plugins"
   ],

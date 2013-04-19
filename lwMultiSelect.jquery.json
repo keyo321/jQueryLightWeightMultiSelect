@@ -1,0 +1,28 @@
+{
+  "name": "lwMultiSelect",
+  "title": "jQuery Light Weight MultiSelect",
+  "description": "A light weight jQuery plugin that converts a multiselect drop menu into a simple two panel selection interface.",
+  "keywords": [
+    "jquery",
+    "multiselect",
+    "plugins"
+  ],
+  "version": "1.0",
+  "author": {
+    "name": "Benny Lin",
+    "url": "http://bennylin.net"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://www.opensource.org/licenses/mit-license.php"
+    }
+  ],
+  "bugs": "https://github.com/keyo321/jQueryLightWeightMultiSelect/issues",
+  "homepage": "http://bennylin.net/jquery-plugin-light-weight-multiselect/",
+  "docs": "https://github.com/keyo321/jQueryLightWeightMultiSelect/blob/master/README.md",
+  "download": "https://github.com/keyo321/jQueryLightWeightMultiSelect/archive/master.zip",
+  "dependencies": {
+    "jquery": ">=1.7"
+  }
+}

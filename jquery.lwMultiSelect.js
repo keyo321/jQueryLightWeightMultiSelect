@@ -59,7 +59,7 @@
       var $self = $(that);
       $self.clone().appendTo(this.$selectedList); //clone the element and append to selected, this is required due to search visibility
       $self.addClass('lwms-selected'); //lwms-selected is to preserved visibility state of search filters
-      this.$element.find('option[value=' + $self.data('value') + ']').attr('selected', 'selected'); //mark selected on the source, used attr vs prop because clone doesn't carry over selected attr      
+      this.$element.find('option[value="' + $self.data('value') + '"]').attr('selected', 'selected'); //mark selected on the source, used attr vs prop because clone doesn't carry over selected attr      
       this.updateCount(); //refresh counts
       this.triggerChange(); //trigger change callback    
     },
@@ -67,8 +67,8 @@
     /* event: clicking on right container li */
     removeItem: function(that) {
       var $self = $(that); 
-      this.$availList.find('li[data-value=' + $self.data('value') + ']').removeClass('lwms-selected'); //remove lwms-selected from available list
-      this.$element.find('option[value=' + $self.data('value') + ']').removeAttr('selected'); //remove selected on the source
+      this.$availList.find('li[data-value="' + $self.data('value') + '"]').removeClass('lwms-selected'); //remove lwms-selected from available list
+      this.$element.find('option[value="' + $self.data('value') + '"]').removeAttr('selected'); //remove selected on the source
       $self.remove(); //remove the current element from selected 
       this.updateCount(); //refresh counts
       this.triggerChange(); //trigger change callback
@@ -89,7 +89,7 @@
         return ($.inArray(this.value, tmpArrId) > -1); //inArray checks with ===, we need tmpArrId to be a array of strings
       }).attr('selected','selected'); //used attr vs prop because clone doesn't carry over selected attr
       
-      $tempAddList.addClass('lwms-selected'); //mark them with ms-selected
+      $tempAddList.addClass('lwms-selected'); //mark them with lwms-selected
 
       this.updateCount(); 
       this.triggerChange();      

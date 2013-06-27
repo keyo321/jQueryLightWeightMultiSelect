@@ -6,7 +6,7 @@ This is a super light weight jQuery plugin that converts a multiselect drop menu
 
 The plugin is written and maintained by Benny Lin.  The design is created by Monique Aviles.
 
-Current version: 1.0
+Current version: 1.0.2
 License: MIT/GPL
 Requires: jQuery 1.7+
 Browsers: IE8+, FF, Chrome, Safari

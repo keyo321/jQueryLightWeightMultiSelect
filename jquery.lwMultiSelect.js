@@ -25,7 +25,9 @@
   // The actual plugin constructor
   function Plugin(element, options) {
     this.$element = $(element);
-    options.maxSelect = parseInt(options.maxSelect) || defaults.maxSelect;
+    if (options) {
+      options.maxSelect = parseInt(options.maxSelect) || defaults.maxSelect;
+    }
     this.options = $.extend({}, defaults, options);
     this._defaults = defaults;
     this._name = pluginName;

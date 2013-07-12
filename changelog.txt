@@ -1,3 +1,9 @@
+1.1.0 - 7/11/2013
+--------------------------
+
+ * Added in maxSelect feature.  You can now limit how many items an user can select.
+
+
 1.0.2 - 6/27/2013
 --------------------------
 

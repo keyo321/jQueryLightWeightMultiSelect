@@ -1,7 +1,7 @@
 /*
  *  Project: jQuery Light Weight MultiSelect
- *  Version: 1.0.1
- *  Date: 2/1/2013
+ *  Version: 1.1.0
+ *  Date: 7/11/2013
  *  Requires: jQuery 1.7+
  *  Description: A light weight plugin that transforms a multi select drop menu into two panels for easy selections.
  *  Demo: http://bennylin.net/jquery-plugin-light-weight-multiselect/
@@ -17,12 +17,15 @@
     addAllText: "Select All",
     removeAllText: "Remove All",
     selectedLabel: "Values accepted",
-    onChange: function (event, ui) { }
+    maxSelect: 0, //0 = no restrictions
+    maxText: '',
+    onChange: ''
   };
 
   // The actual plugin constructor
   function Plugin(element, options) {
     this.$element = $(element);
+    options.maxSelect = parseInt(options.maxSelect) || defaults.maxSelect;
     this.options = $.extend({}, defaults, options);
     this._defaults = defaults;
     this._name = pluginName;
@@ -40,11 +43,18 @@
 
   Plugin.prototype = {
     init: function () {
+      var tmphtml = "";
       this.$element.hide();
       this.$mainContainer = $('<div class="lwms-main lwms-cf"></div>').insertAfter(this.$element);
       this.$leftDiv = $('<div class="lwms-left"></div>').appendTo(this.$mainContainer);
       this.$rightDiv = $('<div class="lwms-right"></div>').appendTo(this.$mainContainer);
-      this.$leftHead = $('<div class="lwms-filterhead"><a href="#" class="lwms-addall">'+this.options.addAllText+'</a>&nbsp; | &nbsp;<a href="#" class="lwms-removeall">'+this.options.removeAllText+'</a></div>').appendTo(this.$leftDiv);
+
+      if (this.options.maxSelect != 0) {
+        tmphtml = '<div class="lwms-filterhead"><div class="lwms-maxtext">'+ this.options.maxText +'</div></div>';
+      } else {
+        tmphtml = '<div class="lwms-filterhead"><a href="#" class="lwms-addall">' + this.options.addAllText + '</a>&nbsp; | &nbsp;<a href="#" class="lwms-removeall">' + this.options.removeAllText + '</a></div>';
+      }
+      this.$leftHead = $(tmphtml).appendTo(this.$leftDiv);
       this.$rightHead = $('<div class="lwms-filterhead"><span class="lwms-filcount"></span> '+this.options.selectedLabel+'</div>').appendTo(this.$rightDiv);      
       this.$availList = $('<ul class="lwms-list lwms-available"></ul>').appendTo(this.$leftDiv);
       this.$selectedList = $('<ul class="lwms-list"></ul>').appendTo(this.$rightDiv);
@@ -53,15 +63,22 @@
       this.updateList();
       this.initEvents();
     },
-    
+
+    //return if current selected is not more than max select
+    isBelowMax: function () {      
+      return (this.$selectedList.children().length < this.options.maxSelect);
+    },
+
     /* event: clicking on left container li */
-    selectItem: function(that) {
-      var $self = $(that);
-      $self.clone().appendTo(this.$selectedList); //clone the element and append to selected, this is required due to search visibility
-      $self.addClass('lwms-selected'); //lwms-selected is to preserved visibility state of search filters
-      this.$element.find('option[value="' + $self.data('value') + '"]').attr('selected', 'selected'); //mark selected on the source, used attr vs prop because clone doesn't carry over selected attr      
-      this.updateCount(); //refresh counts
-      this.triggerChange(); //trigger change callback    
+    selectItem: function (that) {      
+      if (this.options.maxSelect == 0 || this.isBelowMax()) { //allow selection if there's no max or selection is below max
+        var $self = $(that);
+        $self.clone().appendTo(this.$selectedList); //clone the element and append to selected, this is required due to search visibility
+        $self.addClass('lwms-selected'); //lwms-selected is to preserved visibility state of search filters
+        this.$element.find('option[value="' + $self.data('value') + '"]').attr('selected', 'selected'); //mark selected on the source, used attr vs prop because clone doesn't carry over selected attr      
+        this.updateCount(); //refresh counts
+        this.triggerChange(); //trigger change callback    
+      }
     },
     
     /* event: clicking on right container li */
@@ -75,24 +92,26 @@
     },
     
     /* event: selecting all visible */
-    selectAll: function() {      
-      var tmpArrId, $tempAddList = this.$availList.find('li:visible'); //cache list of visible items only (search filters and items not already selected)
-      
-      this.$selectedList.append($tempAddList.clone()); //clone the list and append to selected
-      
-      tmpArrId = $tempAddList.map(function () { 
-        return $(this).data('value').toString(); //convert this to string, data values are typed 
-      }).get(); //get an array of selected values        
+    selectAll: function () {
+      if (this.options.maxSelect == 0) { //only allow this if no max specified
+        var tmpArrId, $tempAddList = this.$availList.find('li:visible'); //cache list of visible items only (search filters and items not already selected)
 
-      //update the source select
-      this.$element.find('option').filter(function (index) {
-        return ($.inArray(this.value, tmpArrId) > -1); //inArray checks with ===, we need tmpArrId to be a array of strings
-      }).attr('selected','selected'); //used attr vs prop because clone doesn't carry over selected attr
-      
-      $tempAddList.addClass('lwms-selected'); //mark them with lwms-selected
+        this.$selectedList.append($tempAddList.clone()); //clone the list and append to selected
 
-      this.updateCount(); 
-      this.triggerChange();      
+        tmpArrId = $tempAddList.map(function () {
+          return $(this).data('value').toString(); //convert this to string, data values are typed 
+        }).get(); //get an array of selected values        
+
+        //update the source select
+        this.$element.find('option').filter(function (index) {
+          return ($.inArray(this.value, tmpArrId) > -1); //inArray checks with ===, we need tmpArrId to be a array of strings
+        }).attr('selected', 'selected'); //used attr vs prop because clone doesn't carry over selected attr
+
+        $tempAddList.addClass('lwms-selected'); //mark them with lwms-selected
+
+        this.updateCount();
+        this.triggerChange();
+      }
     },
     
     /* event: remove all */
@@ -175,14 +194,14 @@
     
     /* call back function if defined */
     triggerChange: function() {
-      if (typeof this.options.onChange != undefined) {
+      if (this.options.onChange != '') {
         this.options.onChange();
       }
     },
     
     /* refresh count */
     updateCount: function () {
-      this.$counter.text(this.$selectedList.children().length + '/' + this.totalItem);
+      this.$counter.text(this.$selectedList.children().length + '/' + ((this.options.maxSelect == 0 ) ? this.totalItem : this.options.maxSelect));
     }
   };
 

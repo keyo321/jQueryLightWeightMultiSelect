@@ -13,5 +13,5 @@ Browsers: IE8+, FF, Chrome, Safari
 
 ## Live Demos
 
-[http://bennylin.net/jquery-plugin-light-weight-multiselect/](http://bennylin.net/jquery-plugin-light-weight-multiselect/)
+[http://keyo321.github.io/jQueryLightWeightMultiSelect](http://keyo321.github.io/jQueryLightWeightMultiSelect)
 
